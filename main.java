@@ -19,7 +19,7 @@ public class Tugas_1 {
         try {
             // TODO code application logic here
             byte[] buffer = new byte[1024];
-            BufferedInputStream bis = new BufferedInputStream(new FileInputStream("H:/coba.txt"));
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream("C:/"));
             bis.read(buffer);
             System.out.println(new String(buffer));
             bis.close();
