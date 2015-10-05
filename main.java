@@ -1,6 +1,14 @@
 import java.io.*
 import java.net.*
 import java.util.*
+package tugas_1;
+
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Tugas_1 {
 
