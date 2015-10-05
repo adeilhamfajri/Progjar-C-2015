@@ -1,1 +1,44 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package sok_1_server;
 
+import java.io.*;
+import java.net.*;
+
+/**
+ *
+ * @author asus
+ */
+public class SOK_1_SERVER {
+
+    /**
+     * @param args the command line arguments
+     * @throws java.lang.Exception
+     */
+    public static void main(String[] args) throws Exception
+    {
+        SOK_1_SERVER SERVER = new SOK_1_SERVER();
+        SERVER.run();
+    }
+
+    public void run() throws Exception
+    {
+        ServerSocket SRVSOCK = new ServerSocket(444);
+        Socket SOCK = SRVSOCK.accept();
+        InputStreamReader IR = new InputStreamReader(SOCK.getInputStream());
+        BufferedReader BR = new BufferedReader(IR);
+        
+        String MESSAGE = BR.readLine();
+        System.out.println(MESSAGE);
+        
+        if (MESSAGE !=null)
+        {
+            PrintStream PS = new PrintStream(SOCK.getOutputStream());
+            PS.println("MESSAGE received!");
+        }
+    }
+    
+}
