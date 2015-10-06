@@ -1,0 +1,19 @@
+package fileexplorer;
+import java.io.File;
+
+public class FileExplorer {
+    
+    public static void main(String[] args) {
+        File folder = new File("D:/");
+        File[] listOfFiles = folder.listFiles();
+
+        for (File listOfFile : listOfFiles) {
+            if (listOfFile.isFile()) {
+                System.out.println("File " + listOfFile.getName());
+            } else if (listOfFile.isDirectory()) {
+                System.out.println("Directory " + listOfFile.getName());
+            }
+        }
+    }
+    
+}
