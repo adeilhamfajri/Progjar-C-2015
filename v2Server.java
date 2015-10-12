@@ -1,6 +1,3 @@
-/* Prototype v1
-*/
-
 package simpleserver;
 
 import java.io.IOException;
@@ -16,8 +13,8 @@ public class SimpleServer {
         public static void main(String[] args) {
         try {
             ServerSocket servsock = new ServerSocket(6666);
-            int timeout = 10000;    // set angka untuk timeout 10 000 ms atau 10 s
-            servsock.setSoTimeout(timeout); // Membuat timeout
+            int timeout = 10000;    //10 000 ms
+            servsock.setSoTimeout(timeout);
             System.out.println("Server mau berjalan ....");
             Socket socket = servsock.accept();
             System.out.println("Server berjalan ....");
@@ -26,7 +23,7 @@ public class SimpleServer {
             OutputStream os = socket.getOutputStream();
             
             String default_location = "/home/f/ff/";
-            String ope = ListofFiles(default_location); //String ope untuk memanggil fungsi listoffile
+            String ope = ListofFiles(default_location);
             
             byte[] buf = new byte[50];
             is.read(buf);
@@ -34,9 +31,9 @@ public class SimpleServer {
             //os.write("Selamat datang di serverku\r\n".getBytes());
             //current = in.nextLine();
             String input = new String(buf);
-            if(input == "ls") {                                         // Jika inputan client ls
-                System.out.println(input);                              //
-  //            os.write(ope.getBytes());                   // masih ga bisa soalnya fungsi listoffile masih println
+            if(input == "ls") {
+                System.out.println(input);
+  //            os.write(ope.getBytes());
                 os.flush();
             }
             
