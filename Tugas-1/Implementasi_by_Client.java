@@ -20,7 +20,7 @@ class Implementasi_by_Client {
             String test = scanner.nextLine();
             
             while (!test.contentEquals("exit")) {
-                Socket socket = new Socket("localhost", 7777);
+                Socket socket = new Socket("localhost", 4356);
                 try (InputStream is = socket.getInputStream(); OutputStream os = socket.getOutputStream()) {
                     os.write(test.getBytes());
                     os.flush();
