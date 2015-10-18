@@ -19,8 +19,7 @@ public class Client {
      */
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
-   //     Implementasi_by_Client client = new Implementasi_by_Client();
-         Implementasi_cd_Client client = new Implementasi_cd_Client();
+        Implementasi_by_Client client = new Implementasi_by_Client();
         client.start();
     }
     
