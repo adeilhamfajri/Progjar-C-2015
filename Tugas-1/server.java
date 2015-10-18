@@ -19,13 +19,10 @@ public class Server {
      */
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
-  //      Implementasi_by_Server server = new Implementasi_by_Server();
-   //     Implementasi_ls_Server server_ls = new Implementasi_ls_Server();
-  //      server.start();
-    //      server_ls.start();
-          
-        Implementasi_cd_Server server_cd = new Implementasi_cd_Server();
-        server_cd.start();
+        Implementasi_by_Server server = new Implementasi_by_Server();
+
+         server.start();
+ 
     }
     
 }
