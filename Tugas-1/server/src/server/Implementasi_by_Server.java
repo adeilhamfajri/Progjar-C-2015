@@ -16,7 +16,7 @@ import java.util.*;
 class Implementasi_by_Server {
    
     public void start() throws IOException{
-        String dir_sem = "H:/";
+        String dir_sem = new String("H:/");
         File dir = new File(dir_sem);
         
          int port = 4356;
@@ -24,7 +24,9 @@ class Implementasi_by_Server {
          System.out.println("Server started listening on " + port);
          
          while (true) {
-            try (Socket socket = serversock.accept(); InputStream is = socket.getInputStream(); OutputStream os = socket.getOutputStream()) {
+            try (Socket socket = serversock.accept()) {
+                InputStream is = socket.getInputStream();
+                OutputStream os = socket.getOutputStream();
                 
                 byte[] buf = new byte[1024];
                 int len = is.read(buf);
@@ -34,70 +36,84 @@ class Implementasi_by_Server {
                 
                 boolean error = false;
                 String respond = "";
-                switch (cmd) {
-                    case "ls":
-                        if (temp.length > 2) {
-                            error = true;
-                            respond = "too many arguments";
-                        }
+                if (cmd.equals("ls")) {
+                    if (temp.length > 2) {
+                        error = true;
+                        respond = "too many arguments";
+                    }
+                    else {
+                        //return list of files
+                        respond = "";
+                        String[] files = null;
+                        if (temp.length == 1)
+                            files = dir.list();
                         else {
-                            //return list of files
-                            respond = "";
-                            String[] files = null;
-                            if (temp.length == 1)
-                                files = dir.list();
+                            String args = temp[1].trim();
+                            File custom_dir = new File(args);
+                            if (!custom_dir.isDirectory()) {
+                                error = true;
+                                respond = "Folder doesn\'t exists!\n";
+                            }
                             else {
-                                String args = temp[1].trim();
-                                File custom_dir = new File(args);
-                                if (!custom_dir.isDirectory()) {
-                                    error = true;
-                                    respond = "Folder doesn\'t exists!\n";
-                                }
-                                else {
-                                    files = custom_dir.list();
-                                }
+                                files = custom_dir.list();
                             }
-                            
-                            if (!error) {
-                                for (String file: files) {
-                                    respond += file + ('\n');
-                                }
+                        }
+                        
+                        if (!error) {
+                            for (String file: files) {
+                                respond += file + ('\n');
                             }
-                        }   break;
-                    case "cd":
-                        if (temp.length > 2) {
-                            error = true;
-                            respond = "too many arguments\n";
+                        }
+                    }
+                }
+                
+                else if (cmd.equals("cd")) {
+                    if (temp.length > 2) {
+                        error = true;
+                        respond = "too many arguments\n";
+                    }
+                    else {
+                        if (temp.length == 1) {
+                            int idx = dir_sem.lastIndexOf('/');
+                            dir_sem = dir_sem.substring(0,idx);
+                            dir = new File(dir_sem);
                         }
                         else {
-                            if (temp.length == 1) {
-                                int idx = dir_sem.lastIndexOf('/');
-                                dir_sem = dir_sem.substring(0,idx);
+                            String args = temp[1].trim();
+                            System.out.println("cd " + args);
+                            File target_dir = new File(args);
+                            if (!target_dir.isDirectory()) {
+                                error = true;
+                                respond = "Folder doesn\'t exists!\n";
+                            }
+                            else {
+                                dir_sem = args;
                                 dir = new File(dir_sem);
                             }
-                            else {
-                                String args = temp[1].trim();
-                                System.out.println("cd " + args);
-                                File target_dir = new File(args);
-                                if (!target_dir.isDirectory()) {
-                                    error = true;
-                                    respond = "Folder doesn\'t exists!\n";
-                                }
-                                else {
-                                    dir_sem = args;
-                                    dir = new File(dir_sem);
-                                }
                         }
-                    }   break;
-                    default:
-                        error = true;
-                        respond = "command not found\n";
-                        break;
+                    }
+                }
+                
+                else if (cmd.equals("pwd")) {
+                        if (temp.length > 1) {
+                            error = true;
+                            respond = "pwd takes no argument\n";
+                        }
+                        else {
+                            respond = dir_sem + '\n';
+                        }
+                    }
+                
+                else {
+                    error = true;
+                    respond = "command not found\n";
                 }
                 
                 os.write(respond.getBytes());
                 os.flush();
                 
+                os.close();
+                is.close();
             }
 
                 }
