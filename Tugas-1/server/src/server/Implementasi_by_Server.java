@@ -16,27 +16,26 @@ import java.util.*;
 class Implementasi_by_Server {
    
     public void start() throws IOException{
-        String dir_sem = new String("H:/");
+        String dir_sem = "H:/";
         File dir = new File(dir_sem);
         
-         int port = 7777;
+         int port = 4356;
          ServerSocket serversock = new ServerSocket(port);
          System.out.println("Server started listening on " + port);
          
          while (true) {
-            Socket socket = serversock.accept();            
-            InputStream is = socket.getInputStream();
-            OutputStream os = socket.getOutputStream();
-        
-            byte[] buf = new byte[1024];
-            int len = is.read(buf);
-            String request = new String(buf);
-            String[] temp = request.split("\\s+");
-            String cmd = temp[0].trim();
-            
-             boolean error = false;
-                    String respond = "";
-                    if (cmd.equals("ls")) {
+            try (Socket socket = serversock.accept(); InputStream is = socket.getInputStream(); OutputStream os = socket.getOutputStream()) {
+                
+                byte[] buf = new byte[1024];
+                int len = is.read(buf);
+                String request = new String(buf);
+                String[] temp = request.split("\\s+");
+                String cmd = temp[0].trim();
+                
+                boolean error = false;
+                String respond = "";
+                switch (cmd) {
+                    case "ls":
                         if (temp.length > 2) {
                             error = true;
                             respond = "too many arguments";
@@ -64,20 +63,42 @@ class Implementasi_by_Server {
                                     respond += file + ('\n');
                                 }
                             }
+                        }   break;
+                    case "cd":
+                        if (temp.length > 2) {
+                            error = true;
+                            respond = "too many arguments\n";
                         }
-                    }
-                    
-                    else {
+                        else {
+                            if (temp.length == 1) {
+                                int idx = dir_sem.lastIndexOf('/');
+                                dir_sem = dir_sem.substring(0,idx);
+                                dir = new File(dir_sem);
+                            }
+                            else {
+                                String args = temp[1].trim();
+                                System.out.println("cd " + args);
+                                File target_dir = new File(args);
+                                if (!target_dir.isDirectory()) {
+                                    error = true;
+                                    respond = "Folder doesn\'t exists!\n";
+                                }
+                                else {
+                                    dir_sem = args;
+                                    dir = new File(dir_sem);
+                                }
+                        }
+                    }   break;
+                    default:
                         error = true;
                         respond = "command not found\n";
-                    }
-                    
-                    os.write(respond.getBytes());
-                    os.flush();
-                    
-                    os.close();
-                    is.close();
-                    socket.close();
+                        break;
+                }
+                
+                os.write(respond.getBytes());
+                os.flush();
+                
+            }
 
                 }
             }
