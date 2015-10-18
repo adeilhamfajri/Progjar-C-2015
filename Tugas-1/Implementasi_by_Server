@@ -52,7 +52,7 @@ class Implementasi_by_Server {
                             File custom_dir = new File(args);
                             if (!custom_dir.isDirectory()) {
                                 error = true;
-                                respond = "Folder doesn\'t exists!\n";
+                                respond = "Directori yang dituju tidak ada!\n";
                             }
                             else {
                                 files = custom_dir.list();
@@ -67,7 +67,17 @@ class Implementasi_by_Server {
                     }
                 }
                 
-                else if (cmd.equals("cd")) {
+                else if (cmd.equals("pwd")) {
+                        if (temp.length > 1) {
+                            error = true;
+                            respond = "pwd takes no argument\n";
+                        }
+                        else {
+                            respond = dir_sem + '\n';
+                        }
+                    }
+                
+                else if (cmd.equals("cd")) { //cd /thaybah
                     if (temp.length > 2) {
                         error = true;
                         respond = "too many arguments\n";
@@ -84,7 +94,7 @@ class Implementasi_by_Server {
                             File target_dir = new File(args);
                             if (!target_dir.isDirectory()) {
                                 error = true;
-                                respond = "Folder doesn\'t exists!\n";
+                                respond = "Directori yang dituju tidak ada!\n";
                             }
                             else {
                                 dir_sem = args;
@@ -94,13 +104,37 @@ class Implementasi_by_Server {
                     }
                 }
                 
-                else if (cmd.equals("pwd")) {
-                        if (temp.length > 1) {
+                   else if (cmd.equals("mkdir")) {
+                        if (temp.length == 1) {
                             error = true;
-                            respond = "pwd takes no argument\n";
+                            respond = "mkdir need an argument(folder_name)\n";
+                        }
+                        else if (temp.length > 2) {
+                            error = true;
+                            respond = "too many arguments\n";
                         }
                         else {
-                            respond = dir_sem + '\n';
+                            String args = temp[1].trim();
+                            File target_dir;
+                            if (args.contains("/")) {
+                                target_dir = new File(args);
+                            }
+                            else {
+                                target_dir = new File(dir_sem + '/' + args);
+                            }
+                            
+                            boolean flag = true;
+                            if (!target_dir.exists()) {
+                                flag = target_dir.mkdir();
+                            }
+                            else {
+                                error = true;
+                                respond = "Folder exists!";
+                            }
+                            
+                            if (!flag) {
+                                respond = "Failed to create directory, please try again.\n";
+                            }
                         }
                     }
                 
