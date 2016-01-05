@@ -7,10 +7,15 @@ package server;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import Serialization.Serialization;
 
 /**
  *
@@ -23,6 +28,7 @@ public class KirimKeClient {
     String katakunci;
     String sinyal;
     int kesempatan;
+    int score;
 
 //    public KirimKeClient(Socket client_socket, String katapilihan, String katakunci) {
 //        this.client_socket = client_socket;
@@ -35,11 +41,12 @@ public class KirimKeClient {
 //        this.client_socket = client_socket;
 //    }
 
-    public KirimKeClient(int kesempatan, String katakunci, String katapilihan, Socket client_socket) {
+    public KirimKeClient(int kesempatan, String katakunci, String katapilihan, Socket client_socket, int score) {
         this.katakunci = katakunci; 
         this.client_socket = client_socket; 
         this.katapilihan = katapilihan; 
         this.kesempatan = kesempatan; 
+        this.score = score;
     }
 
     public KirimKeClient(Socket client_socket) {
@@ -52,12 +59,20 @@ public class KirimKeClient {
  
         try {
        //     String msgout = "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n Game Tebak Kata\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n 1. anda akan diberi kesempatan menebak 8 kali\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
-                String a = "kesempatan anda menebak : " + kesempatan; System.out.println("[*]Kesempatan : " + kesempatan);
-                String b = "\nKata Kunci : " + katakunci; System.out.println("[*]Kata kunci : " + katakunci);
-                String c = "\nTebak kata apa ini : " + katapilihan; System.out.println("[*]Kata pilihan : " + katapilihan);
+                String x = "Score anda : " + score;
+                String a = "\nkesempatan anda menebak : " + kesempatan; 
+                String b = "\nKata Kunci : " + katakunci; 
+                String c = "\nTebak kata apa ini : " + katapilihan; 
                 String d = " \nAnda tebak : ";
-                String msgout = a + b + c + d;
-                
+                String msgout = x + a + b + c + d;
+            //Serialization GAGAL total
+  //          OutputStream OS = client_socket.getOutputStream();
+    //        ObjectOutputStream OOS = new ObjectOutputStream(OS);
+      
+//      int kesempatan, String katakunci, String katapilihan, Socket client_socket
+     //       Serialization serial = new Serialization(kesempatan, katakunci, katapilihan);
+    //        OOS.writeObject(serial);
+            
             dout = new DataOutputStream(client_socket.getOutputStream());
             dout.writeUTF(msgout);
             dout.flush();

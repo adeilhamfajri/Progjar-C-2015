@@ -134,7 +134,7 @@ public class server {
             pilih2 = ""; //kita reset jadi kosongan lagi, setiap selesai looping
             kata_kunci = katakunci[acak];
              //Ngirim Soal ke Client
-            KirimKeClient kirim = new KirimKeClient(kesempatan, kata_kunci, katapilihan, client_socket, sinyal);
+            KirimKeClient kirim = new KirimKeClient(kesempatan, kata_kunci, katapilihan, client_socket);
             kirim.run();
             
             //Minta inputan dari Client

@@ -27,14 +27,14 @@ public class clone_server implements Runnable{
     private static String[] gudangkata = {
         "michaelfaraday", "cristianoronaldo", 
         "lionelmessi", "markzuckerberg", "andyrubin","bayernmunich",
-        "alberteinstein","kutu", "jetli"
+        "alberteinstein","darlisherumurti", "baskoroadi"
     };
     
     //deklarasi variable array kata kunci
     private static String[] katakunci = {
         "Penemu Listrik", "pemain bola bernomor punggung 7 diReal Madrid",
         "Pemenang piala ballon d'or tahun 2013", "Penemu Facebook", "Penemu Android","Sebutan lain dari bayern munchen",
-        "tokoh dunia","nama panggilan mahasiswa ithb jurusan SK", "nama panggilan mahasiswa ithb jurusan EL"  
+        "tokoh dunia","nama kajur TC saat ini", "nama dosen Progjar C 2015/2016"  
     };
     
     Random rand = new Random();
@@ -52,6 +52,7 @@ public class clone_server implements Runnable{
     boolean back;
     String sinyal = "terus";
     int ulang=3;
+    int score=0;
     
     public static void main(String[] args) throws IOException {
         
@@ -115,24 +116,27 @@ public class clone_server implements Runnable{
             pilih2 = ""; //kita reset jadi kosongan lagi, setiap selesai looping
             kata_kunci = katakunci[acak];
              //Ngirim Soal ke Client
-            System.out.println("Yang dikirim ke Client : " + katapilihan);
-            KirimKeClient kirim = new KirimKeClient(kesempatan, kata_kunci, katapilihan, client_socket);
+    //        System.out.println("Yang dikirim ke Client : " + katapilihan);
+            KirimKeClient kirim = new KirimKeClient(kesempatan, kata_kunci, katapilihan, client_socket, score);
             kirim.run();
-            System.out.println("\n");
+    //        System.out.println("\n");
             //Minta inputan dari Client
             JawabanClient jawaban = new JawabanClient(client_socket);
             pilih2 = jawaban.run();
+            System.out.println("Apa sih jawaban client : " + pilih2);
 
             //memasukkan hal-hal penting ke method "proses"
-            System.out.println("Jawaban dari Client : " + pilih2);
+   //         System.out.println("Jawaban dari Client : " + pilih2);
             katapilihan = proses(katapilihan, pilih2, acak);
-            System.out.println("Kata Pilihan  : " + katapilihan);
+            System.out.println("Kata Pilihan setelah dari proses ? : " + katapilihan);
             //apabila kata yang diinputkan mengandung unsur kata yang dimaksud, maka counter kesempatan dilewati
             
             if(katapilihan.equals(gudangkata[acak])){
                    // System.out.println("\n Selamat Jawaban Anda Benar !!");
                     pesan = "\nSelamat Jawaban Anda Benar !!";
                     kirim.pesan(pesan);
+                    score+=10;
+                    System.out.println("Score anda : " + score);
                     break; //selesai dari permainan, hanya utk 1 kali permainan
        
                 }
@@ -177,6 +181,7 @@ public class clone_server implements Runnable{
             }
         
             katapilihan = katapilihan.concat(ubah[c]);
+         
     }
          return katapilihan; 
     }

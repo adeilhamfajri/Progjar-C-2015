@@ -35,6 +35,8 @@ class JawabanClient {
                 din = new DataInputStream(client_socket.getInputStream());
                 msgin = din.readUTF();
                 jawaban = msgin;   
+                System.out.println("Ngecek jawaban client");
+                System.out.println(jawaban);
             } catch (IOException ex) {
                 Logger.getLogger(Pemain_ThreadReceiveSoal.class.getName()).log(Level.SEVERE, null, ex);
             }

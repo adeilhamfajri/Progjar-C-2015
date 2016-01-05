@@ -19,6 +19,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import server.utama;
 import server.KirimKeClient;
+import Serialization.Serialization;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import Serialization.Serialization;
 /**
  *
  * @author Ade Ilham Fajri
@@ -26,6 +30,7 @@ import server.KirimKeClient;
 public class clone_client {
     static DataOutputStream dout;
     String sinyal;
+    static int chance;
         
     public static void main(String[] args) throws IOException{
 
@@ -34,6 +39,13 @@ public class clone_client {
                 
                 ReceiveSoal receive = new ReceiveSoal(client_socket);
                 SendSoal send = new SendSoal(client_socket);
+                
+      //          InputStream IS = client_socket.getInputStream();
+          //      ObjectInputStream OIS = new ObjectInputStream(IS);
+                
+     //           Serialization serial = (Serialization)OIS.readObject();
+                
+   //             chance = serial.kesempatan;
               //  Thread thread_99 = new Thread(receive);
                 
              while(true){
